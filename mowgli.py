@@ -2,7 +2,7 @@
 
 # Nicolas Seriot
 # 2021-09-17
-# mowgli.py
+# https://github.com/nst/Mowgli
 # My Own Website GEnerator LIght
 
 # Copy src/ into dst/

@@ -8,6 +8,10 @@ pagetitle: Mowgli
 
 ## My Own Website Generator LIght
 
+#### Repository
+
+[https://github.com/nst/Mowgli](https://github.com/nst/Mowgli)
+
 #### Idea
 
 - only one file with < 150 lines of Python
