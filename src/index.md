@@ -1,5 +1,10 @@
-# Mowgli
-Generate a static website from Markdown files with &lt;150 lines of Python
+---
+pagetitle: Mowgli
+...
+
+### Mowgli
+
+#### About | [Syntax](syntax/index.html) | [Other Section](other_section/index.html)
 
 ## My Own Website Generator LIght
 
