@@ -6,7 +6,7 @@ pagetitle: Mowgli
 
 #### About | [Syntax](syntax/index.html) | [Other Section](other_section/index.html)
 
-## My Own Website Generator LIght
+## My Own Website Generator Light and Intuitive
 
 #### Repository
 

@@ -1,7 +1,7 @@
 # Mowgli
 Generate a static website from Markdown files with &lt;150 lines of Python
 
-## My Own Website Generator LIght
+## My Own Website Generator Light and Intuitive
 
 #### Idea
 

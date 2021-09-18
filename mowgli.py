@@ -3,7 +3,7 @@
 # Nicolas Seriot
 # 2021-09-17
 # https://github.com/nst/Mowgli
-# My Own Website GEnerator LIght
+# My Own Website Generator Light and Intuitive
 
 # Copy src/ into dst/
 # Convert .md into .html along the way
