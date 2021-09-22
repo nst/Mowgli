@@ -22,3 +22,7 @@ Generate a static website from Markdown files with &lt;150 lines of Python
       -h, --help   show this help message and exit
       -c, --clean  clean web site
       -m, --make   make web site
+
+#### File upload
+
+Mowgli plays well with [kaa.py]()https://gist.github.com/nst/6703da0b26f796fd2429310c7dda13cf) for FTP upload.
