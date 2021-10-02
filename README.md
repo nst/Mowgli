@@ -6,8 +6,8 @@ Generate a static website from Markdown files with &lt;150 lines of Python
 #### Idea
 
 - only one file with < 150 lines of Python
-- copy src/ into dst/
-- convert .md into .html along the way
+- copy `src/` into `dst/`
+- convert `.md` into `.html` along the way
 
 #### Installation
 
