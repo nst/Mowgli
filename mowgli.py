@@ -1,12 +1,8 @@
 #!/usr/bin/env python3
 
 # Nicolas Seriot
-# 2021-09-17
-# https://github.com/nst/Mowgli
 # My Own Website Generator Light and Intuitive
-
-# Copy src/ into dst/
-# Convert .md into .html along the way
+# https://github.com/nst/Mowgli
 
 import os
 import sys
@@ -32,116 +28,69 @@ $body
 """
     
 def clean():
-
-    print("clean dst")
-    
     s = datetime.now().strftime("%Y%m%d%H%M%S")
-    dst_dir = os.path.expanduser("~/.Trash/%s" % s)
+    dst_dir = os.path.expanduser(f"~/.Trash/{s}")
     os.mkdir(dst_dir)
 
     for file_name in os.listdir("dst"):
         shutil.move(os.path.join("dst", file_name), dst_dir)
 
 def make():
+    # copy src into dst, convert .md into .html along the way
 
-    if not os.path.isdir("src"):
-        os.mkdir("src")
-
-    if not os.path.isdir("dst"):
-        os.mkdir("dst")    
-
-    md = markdown.Markdown(extensions=["tables", "meta"])
+    md = markdown.Markdown(extensions=["tables", "meta", "admonition"])
 
     for root, dirnames, filenames in os.walk('src'):
 
-        print("\nroot:", root, "\ndirnames:", dirnames, "\nfilenames", filenames)
-         
         short_root = os.path.relpath(root, 'src')
-        
         dst_root = os.path.join("dst", short_root)
+        css = "../" * root.count("/") + "style.css"
 
-        levels_count = root.count("/")
-        file_path = "../" * levels_count
+        os.makedirs(dst_root, exist_ok=True)
 
-        if not os.path.isdir(dst_root):
-            os.mkdir(dst_root)
-            print("** create", dst_root)
-        
         for f in filenames:
 
             if f.startswith('.'):
-                print(f"-- skip {f}")
                 continue
 
-            _, ext = os.path.splitext(f)
-            
-            is_md = ext == ".md"
-            
+            is_md = f.endswith(".md")
+            dst_name = f[:-3] + ".html" if is_md else f
             src = os.path.join(root, f)
-            dst = None
-            
+            dst = os.path.join(dst_root, dst_name)
+
+            if os.path.exists(dst) and os.path.getmtime(dst) >= os.path.getmtime(src):
+                continue
+
             if is_md:
-                html_file_name = os.path.splitext(f)[0]+'.html'
-                dst = os.path.sep.join(["dst", short_root, html_file_name])
-            else:
-                dst = os.path.join("dst", short_root, f)
-            
-            if os.path.exists(dst):
-                    
-                ts_src = os.path.getmtime(src)
-                ts_dst = os.path.getmtime(dst)
-                            
-                if ts_dst >= ts_src:
-                    print("  skip", dst)
-                    continue # file is up to date
-            
-            if is_md:
+                print(f"-- MD {dst}")
 
-                print(f"-- convert {src} -> {dst}")
+                md.reset()
+                with open(src) as fh:
+                    body = md.convert(fh.read())
 
-                with open(src) as f:
-                    s = f.read()
-                    
-                css = file_path + "style.css"
-                body = md.convert(s)
-
-                print(md.Meta)
                 if "pagetitle" not in md.Meta:
                     print(f"-- Error: page '{src}' lacks 'pagetitle' metadata")
                     sys.exit(1)
 
-                pagetitle = md.Meta["pagetitle"].pop()
-                extraheader = md.Meta.get("extraheader", None)
-                                
-                h = extraheader.pop() if extraheader else ""
+                html_doc = Template(template).substitute(
+                    pagetitle=md.Meta["pagetitle"][0],
+                    css=css,
+                    extraheader="\n".join(md.Meta.get("extraheader", [])),
+                    body=body,
+                )
 
-                t = Template(template)
-                html_doc = t.substitute(pagetitle=pagetitle,
-                                        css=css,
-                                        extraheader=h,
-                                        body=body)
-                
-                with open(dst, "w") as f:
-                    f.write(html_doc)
-
+                with open(dst, "w") as fh:
+                    fh.write(html_doc)
             else:
-                print(f"-- copy {f}")
                 shutil.copy2(src, dst)
 
 if __name__ == "__main__":
-        
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-c", "--clean", action='store_true', help="clean web site")
-    parser.add_argument("-m", "--make", action='store_true', help="make web site")
 
+    os.makedirs("src", exist_ok=True)
+    os.makedirs("dst", exist_ok=True)
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("command", choices=["clean", "make"])
     args = parser.parse_args()
-    
-    if len(sys.argv) == 1:
-        parser.print_help(sys.stderr)    
-        sys.exit(1)
-    
-    if args.clean:
-        clean()
-      
-    if args.make:
-        make()
+
+    {"clean": clean, "make": make}[args.command]()

@@ -1,11 +1,11 @@
 # Mowgli
-Generate a static website from Markdown files with &lt;150 lines of Python
+Generate a static website from Markdown files with &lt;100 lines of Python
 
 ## My Own Website Generator Light and Intuitive
 
 #### Idea
 
-- only one file with < 150 lines of Python
+- only one file with < 100 lines of Python
 - copy `src/` into `dst/`
 - convert `.md` into `.html` along the way
 
@@ -15,13 +15,14 @@ Generate a static website from Markdown files with &lt;150 lines of Python
 
 #### Usage
 
-    python3 mowgli.py 
-    usage: mowgli.py [-h] [-c] [-m]
-    
-    optional arguments:
-      -h, --help   show this help message and exit
-      -c, --clean  clean web site
-      -m, --make   make web site
+    python3 mowgli.py
+    usage: mowgli.py [-h] {clean,make}
+
+    positional arguments:
+      {clean,make}
+
+    options:
+      -h, --help    show this help message and exit
 
 #### File upload
 
